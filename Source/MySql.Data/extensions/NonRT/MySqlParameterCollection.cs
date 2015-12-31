@@ -1,23 +1,23 @@
 ﻿// Copyright © 2004, 2013, Oracle and/or its affiliates. All rights reserved.
 //
 // MySQL Connector/NET is licensed under the terms of the GPLv2
-// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most 
-// MySQL Connectors. There are special exceptions to the terms and 
-// conditions of the GPLv2 as it is applied to this software, see the 
+// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most
+// MySQL Connectors. There are special exceptions to the terms and
+// conditions of the GPLv2 as it is applied to this software, see the
 // FLOSS License Exception
 // <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 //
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published 
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published
 // by the Free Software Foundation; version 2 of the License.
 //
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 // for more details.
 //
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc., 
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
 using MySql.Data.MySqlClient.Properties;
@@ -49,7 +49,7 @@ namespace MySql.Data.MySqlClient
     #region DbParameterCollection Implementation
 
     /// <summary>
-    /// Adds an array of values to the end of the <see cref="MySqlParameterCollection"/>. 
+    /// Adds an array of values to the end of the <see cref="MySqlParameterCollection"/>.
     /// </summary>
     /// <param name="values"></param>
     public override void AddRange(Array values)
@@ -133,7 +133,7 @@ namespace MySql.Data.MySqlClient
     }
 
     /// <summary>
-    /// Returns an enumerator that iterates through the <see cref="MySqlParameterCollection"/>. 
+    /// Returns an enumerator that iterates through the <see cref="MySqlParameterCollection"/>.
     /// </summary>
     /// <returns></returns>
     public override IEnumerator GetEnumerator()
@@ -154,9 +154,10 @@ namespace MySql.Data.MySqlClient
       InternalAdd(parameter, index);
     }
 
+#if !DNXCORE50
     /// <summary>
     /// Gets a value that indicates whether the <see cref="MySqlParameterCollection"/>
-    /// has a fixed size. 
+    /// has a fixed size.
     /// </summary>
     public override bool IsFixedSize
     {
@@ -165,7 +166,7 @@ namespace MySql.Data.MySqlClient
 
     /// <summary>
     /// Gets a value that indicates whether the <see cref="MySqlParameterCollection"/>
-    /// is read-only. 
+    /// is read-only.
     /// </summary>
     public override bool IsReadOnly
     {
@@ -174,12 +175,13 @@ namespace MySql.Data.MySqlClient
 
     /// <summary>
     /// Gets a value that indicates whether the <see cref="MySqlParameterCollection"/>
-    /// is synchronized. 
+    /// is synchronized.
     /// </summary>
     public override bool IsSynchronized
     {
       get { return (items as IList).IsSynchronized; }
     }
+#endif
 
     /// <summary>
     /// Removes the specified MySqlParameter from the collection.
@@ -219,8 +221,8 @@ namespace MySql.Data.MySqlClient
     }
 
     /// <summary>
-    /// Gets an object that can be used to synchronize access to the 
-    /// <see cref="MySqlParameterCollection"/>. 
+    /// Gets an object that can be used to synchronize access to the
+    /// <see cref="MySqlParameterCollection"/>.
     /// </summary>
     public override object SyncRoot
     {
