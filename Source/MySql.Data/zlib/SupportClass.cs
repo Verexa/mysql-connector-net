@@ -113,12 +113,12 @@ namespace zlib
 			int bytesRead   = sourceStream.Read(receiver, start, count);
 
 			// Returns -1 if EOF
-			if (bytesRead == 0)	
+			if (bytesRead == 0)
 				return -1;
-                
+
 			for(int i = start; i < start + bytesRead; i++)
 				target[i] = (byte)receiver[i];
-                
+
 			return bytesRead;
 		}
 
@@ -160,12 +160,12 @@ namespace zlib
 		/// </summary>
 		/// <param name="byteArray">The array of bytes to convert</param>
 		/// <returns>The new array of chars</returns>
-		public static char[] ToCharArray(byte[] byteArray) 
+		public static char[] ToCharArray(byte[] byteArray)
 		{
 			return System.Text.UTF8Encoding.UTF8.GetChars(byteArray);
 		}
 
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
 		/*******************************/
 		/// <summary>
 		/// Writes an object to the specified Stream
