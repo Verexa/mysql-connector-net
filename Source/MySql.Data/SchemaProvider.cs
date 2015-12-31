@@ -1,23 +1,23 @@
-// Copyright © 2004, 2015, Oracle and/or its affiliates. All rights reserved.
+// Copyright ï¿½ 2004, 2015, Oracle and/or its affiliates. All rights reserved.
 //
 // MySQL Connector/NET is licensed under the terms of the GPLv2
-// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most 
-// MySQL Connectors. There are special exceptions to the terms and 
-// conditions of the GPLv2 as it is applied to this software, see the 
+// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most
+// MySQL Connectors. There are special exceptions to the terms and
+// conditions of the GPLv2 as it is applied to this software, see the
 // FLOSS License Exception
 // <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 //
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published 
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published
 // by the Free Software Foundation; version 2 of the License.
 //
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 // for more details.
 //
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc., 
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
 using System;
@@ -230,7 +230,7 @@ namespace MySql.Data.MySqlClient
           row["PRIVILEGES"] = reader.GetString(7);
           row["COLUMN_COMMENT"] = reader.GetString(8);
 #if !CF && !RT
-          row["GENERATION_EXPRESION"] = reader.GetString(6).Contains("VIRTUAL") ? reader.GetString(9) : string.Empty;                     
+          row["GENERATION_EXPRESION"] = reader.GetString(6).Contains("VIRTUAL") ? reader.GetString(9) : string.Empty;
 #endif
           ParseColumnRow(row);
         }
@@ -383,7 +383,7 @@ namespace MySql.Data.MySqlClient
       dt.AddColumn("REFERENCED_TABLE_NAME", typeof(string));
 
       // first we use our restrictions to get a list of tables that should be
-      // consulted.  We save the keyname restriction since GetTables doesn't 
+      // consulted.  We save the keyname restriction since GetTables doesn't
       // understand that.
       string keyName = null;
       if (restrictions != null && restrictions.Length >= 4)
@@ -419,7 +419,7 @@ namespace MySql.Data.MySqlClient
       dt.AddColumn("REFERENCED_COLUMN_NAME", typeof(string));
 
       // first we use our restrictions to get a list of tables that should be
-      // consulted.  We save the keyname restriction since GetTables doesn't 
+      // consulted.  We save the keyname restriction since GetTables doesn't
       // understand that.
       string keyName = null;
       if (restrictions != null && restrictions.Length >= 4)
@@ -463,7 +463,7 @@ namespace MySql.Data.MySqlClient
       string sqlMode = GetSqlMode();
 
       if (filterName != null)
-        filterName = StringUtility.ToLowerInvariant(filterName); 
+        filterName = StringUtility.ToLowerInvariant(filterName);
 
       string sql = string.Format("SHOW CREATE TABLE `{0}`.`{1}`",
                      tableToParse["TABLE_SCHEMA"], tableToParse["TABLE_NAME"]);
@@ -686,7 +686,7 @@ namespace MySql.Data.MySqlClient
 
     private MySqlSchemaCollection GetDataSourceInformation()
     {
-#if CF || RT
+#if CF || RT || DNXCORE50
       throw new NotSupportedException();
 #else
       MySqlSchemaCollection dt = new MySqlSchemaCollection("DataSourceInformation");
@@ -834,7 +834,7 @@ namespace MySql.Data.MySqlClient
     private static MySqlSchemaCollection GetReservedWords()
     {
       MySqlSchemaCollection dt = new MySqlSchemaCollection("ReservedWords");
-#if !RT
+#if !RT && !DNXCORE50
       dt.AddColumn(DbMetaDataColumnNames.ReservedWord, typeof(string));
       Stream str = Assembly.GetExecutingAssembly().GetManifestResourceStream(
         "MySql.Data.MySqlClient.Properties.ReservedWords.txt");
