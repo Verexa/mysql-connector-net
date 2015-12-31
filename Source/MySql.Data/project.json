@@ -1,0 +1,46 @@
+{
+  "exclude": [
+    "cf/*.cs",
+    "extensions/RT/*.cs",
+    "Replication/*.cs",
+    "Authentication/WindowsAuthenticationPlugin.cs",
+    "common/NativeMethods.cs",
+    "common/MyNetworkStream-RT.cs",
+    "common/NamedPipeStream.cs",
+    "base/BaseTransaction.cs",
+    "base/StateChangeEventArgs.cs",
+    "MySqlClientPermission.cs",
+    "MySqlClientPermissionAttribute.cs",
+    "MySqlPromotableTransaction.cs",
+    "MySqlConfiguration.cs",
+    "MySqlSecurityPermission.cs",
+    "SystemPerformanceMonitor.cs",
+    "Installer.cs",
+    "dataadapter.cs"
+  ],
+  "frameworks": {
+    "dnxcore50": {
+      "dependencies": {
+        "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+        "System.Collections": "4.0.11-*",
+        "System.Data.Common": "4.0.1-*",
+        "System.Diagnostics.Tools": "4.0.1-*",
+        "System.Diagnostics.TraceSource": "4.0.0-*",
+        "System.Diagnostics.Debug": "4.0.11-*",
+        "System.IO": "4.0.11-*",
+        "System.Linq": "4.0.1-*",
+        "System.Reflection.TypeExtensions": "4.1.0-*",
+        "System.Reflection.Primitives": "4.0.1-*",
+        "System.Reflection.Extensions": "4.0.1-*",
+        "System.Runtime": "4.0.21-*",
+        "System.Security.Cryptography.Algorithms": "4.0.0-*",
+        "System.Text.Encoding": "4.0.11-*",
+        "System.Text.Encoding.Extensions": "4.0.11-*",
+        "System.Text.RegularExpressions": "4.0.11-*",
+        "System.Threading.Timer": "4.0.1-*",
+        "System.Net.NameResolution": "4.0.0-*",
+        "System.Net.Sockets": "4.1.0-*"
+      }
+    }
+  }
+}
