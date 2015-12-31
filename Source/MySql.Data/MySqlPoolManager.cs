@@ -1,23 +1,23 @@
-// Copyright © 2004, 2013, Oracle and/or its affiliates. All rights reserved.
+// Copyright ï¿½ 2004, 2013, Oracle and/or its affiliates. All rights reserved.
 //
 // MySQL Connector/NET is licensed under the terms of the GPLv2
-// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most 
-// MySQL Connectors. There are special exceptions to the terms and 
-// conditions of the GPLv2 as it is applied to this software, see the 
+// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most
+// MySQL Connectors. There are special exceptions to the terms and
+// conditions of the GPLv2 as it is applied to this software, see the
 // FLOSS License Exception
 // <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 //
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published 
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published
 // by the Free Software Foundation; version 2 of the License.
 //
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 // for more details.
 //
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc., 
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
 using System;
@@ -37,14 +37,14 @@ namespace MySql.Data.MySqlClient
     private static Dictionary<string, MySqlPool> pools = new Dictionary<string, MySqlPool>();
     private static List<MySqlPool> clearingPools = new List<MySqlPool>();
 
-    // Timeout in seconds, after which an unused (idle) connection 
+    // Timeout in seconds, after which an unused (idle) connection
     // should be closed.
     static internal int maxConnectionIdleTime = 180;
 
 
     static MySqlPoolManager()
     {
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
       AppDomain.CurrentDomain.ProcessExit += new EventHandler(EnsureClearingPools);
       AppDomain.CurrentDomain.DomainUnload += new EventHandler(EnsureClearingPools);
 #endif
@@ -59,7 +59,7 @@ namespace MySql.Data.MySqlClient
     //expired connections in the first cleanup.
     private static Timer timer = new Timer(new TimerCallback(CleanIdleConnections),
       null, (maxConnectionIdleTime * 1000) + 8000, maxConnectionIdleTime * 1000);
- 
+
     private static string GetKey(MySqlConnectionStringBuilder settings)
     {
       string key = "";
@@ -67,7 +67,7 @@ namespace MySql.Data.MySqlClient
       {
         key = settings.ConnectionString;
       }
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
       if (settings.IntegratedSecurity && !settings.ConnectionReset)
       {
         try
@@ -82,8 +82,8 @@ namespace MySql.Data.MySqlClient
         }
         catch (System.Security.SecurityException ex)
         {
-          // Documentation for WindowsIdentity.GetCurrent() states 
-          // SecurityException can be thrown. In this case the 
+          // Documentation for WindowsIdentity.GetCurrent() states
+          // SecurityException can be thrown. In this case the
           // connection can only be pooled if reset is done.
           throw new MySqlException(Resources.NoWindowsIdentity, ex);
         }
