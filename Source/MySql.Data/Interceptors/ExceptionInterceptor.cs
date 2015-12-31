@@ -1,23 +1,23 @@
 ﻿// Copyright © 2004, 2011, Oracle and/or its affiliates. All rights reserved.
 //
 // MySQL Connector/NET is licensed under the terms of the GPLv2
-// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most 
-// MySQL Connectors. There are special exceptions to the terms and 
-// conditions of the GPLv2 as it is applied to this software, see the 
+// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most
+// MySQL Connectors. There are special exceptions to the terms and
+// conditions of the GPLv2 as it is applied to this software, see the
 // FLOSS License Exception
 // <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 //
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published 
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published
 // by the Free Software Foundation; version 2 of the License.
 //
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 // for more details.
 //
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc., 
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
 using System;
@@ -29,7 +29,7 @@ using System.Reflection;
 namespace MySql.Data.MySqlClient
 {
   /// <summary>
-  /// BaseExceptionInterceptor is the base class that should be used for all userland 
+  /// BaseExceptionInterceptor is the base class that should be used for all userland
   /// exception interceptors
   /// </summary>
   public abstract class BaseExceptionInterceptor
@@ -64,7 +64,7 @@ namespace MySql.Data.MySqlClient
   {
     List<BaseExceptionInterceptor> interceptors = new List<BaseExceptionInterceptor>();
 
-    public ExceptionInterceptor(MySqlConnection connection) 
+    public ExceptionInterceptor(MySqlConnection connection)
     {
       this.connection = connection;
 
@@ -98,6 +98,7 @@ namespace MySql.Data.MySqlClient
       throw e;
     }
 
+#if !DNXCORE50
     protected override string ResolveType(string nameOrType)
     {
       if (MySqlConfiguration.Settings != null && MySqlConfiguration.Settings.ExceptionInterceptors != null)
@@ -108,5 +109,6 @@ namespace MySql.Data.MySqlClient
       }
       return base.ResolveType(nameOrType);
     }
+#endif
   }
 }
