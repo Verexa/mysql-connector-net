@@ -1,23 +1,23 @@
-// Copyright © 2004, 2015, Oracle and/or its affiliates. All rights reserved.
+// Copyright ï¿½ 2004, 2015, Oracle and/or its affiliates. All rights reserved.
 //
 // MySQL Connector/NET is licensed under the terms of the GPLv2
-// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most 
-// MySQL Connectors. There are special exceptions to the terms and 
-// conditions of the GPLv2 as it is applied to this software, see the 
+// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most
+// MySQL Connectors. There are special exceptions to the terms and
+// conditions of the GPLv2 as it is applied to this software, see the
 // FLOSS License Exception
 // <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 //
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published 
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published
 // by the Free Software Foundation; version 2 of the License.
 //
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 // for more details.
 //
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc., 
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
 using System;
@@ -31,10 +31,10 @@ using System.Text;
 using MySql.Data.MySqlClient.Authentication;
 using System.Reflection;
 using System.ComponentModel;
-#if RT
+#if RT || DNXCORE50
 using System.Linq;
 #endif
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using System.Security.Authentication;
@@ -195,7 +195,7 @@ namespace MySql.Data.MySqlClient
       try
       {
         baseStream = StreamCreator.GetStream(Settings);
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
          if (Settings.IncludeSecurityAsserts)
             MySqlSecurityPermission.CreatePermissionSet(false).Assert();
 #endif
@@ -273,7 +273,7 @@ namespace MySql.Data.MySqlClient
       packet.WriteByte(33); //character set utf-8
       packet.Write(new byte[23]);
 
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
       if ((serverCaps & ClientFlags.SSL) == 0)
       {
         if ((Settings.SslMode != MySqlSslMode.None)
@@ -311,19 +311,19 @@ namespace MySql.Data.MySqlClient
       if ((connectionFlags & ClientFlags.COMPRESS) != 0)
         stream = new MySqlStream(baseStream, Encoding, true);
 
-      // give our stream the server version we are connected to.  
-      // We may have some fields that are read differently based 
+      // give our stream the server version we are connected to.
+      // We may have some fields that are read differently based
       // on the version of the server we are connected to.
       packet.Version = version;
       stream.MaxBlockSize = maxSinglePacket;
     }
 
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
 
     #region SSL
 
     /// <summary>
-    /// Retrieve client SSL certificates. Dependent on connection string 
+    /// Retrieve client SSL certificates. Dependent on connection string
     /// settings we use either file or store based certificates.
     /// </summary>
     private X509CertificateCollection GetClientCertificates()
@@ -546,7 +546,7 @@ namespace MySql.Data.MySqlClient
           }
           catch (Exception)
           {
-            // Eat exception here. We should try to closing 
+            // Eat exception here. We should try to closing
             // the stream anyway.
           }
         }
@@ -607,7 +607,7 @@ namespace MySql.Data.MySqlClient
       }
       else if (fieldCount == 0)
       {
-        // the code to read last packet will set these server status vars 
+        // the code to read last packet will set these server status vars
         // again if necessary.
         serverStatus &= ~(ServerStatusFlags.AnotherQuery |
                           ServerStatusFlags.MoreResults);
@@ -625,7 +625,7 @@ namespace MySql.Data.MySqlClient
     }
 
     /// <summary>
-    /// Sends the specified file to the server. 
+    /// Sends the specified file to the server.
     /// This supports the LOAD DATA LOCAL INFILE
     /// </summary>
     /// <param name="filename"></param>
@@ -839,7 +839,7 @@ namespace MySql.Data.MySqlClient
       return statementId;
     }
 
-    //		private void ClearFetchedRow() 
+    //		private void ClearFetchedRow()
     //		{
     //			if (lastCommandResult == 0) return;
 
@@ -856,9 +856,9 @@ namespace MySql.Data.MySqlClient
     //		}
 
     /// <summary>
-    /// FetchDataRow is the method that the data reader calls to see if there is another 
+    /// FetchDataRow is the method that the data reader calls to see if there is another
     /// row to fetch.  In the non-prepared mode, it will simply read the next data packet.
-    /// In the prepared mode (statementId > 0), it will 
+    /// In the prepared mode (statementId > 0), it will
     /// </summary>
     public bool FetchDataRow(int statementId, int columns)
     {
@@ -903,7 +903,7 @@ namespace MySql.Data.MySqlClient
     /// Execution timeout, in milliseconds. When the accumulated time for network IO exceeds this value
     /// TimeoutException is thrown. This timeout needs to be reset for every new command
     /// </summary>
-    /// 
+    ///
     public void ResetTimeout(int timeout)
     {
       if (stream != null)
@@ -920,7 +920,7 @@ namespace MySql.Data.MySqlClient
         foreach (PropertyInfo property in attrs.GetType().GetProperties())
         {
           string name = property.Name;
-#if RT
+#if RT || DNXCORE50
           object[] customAttrs = property.GetCustomAttributes(typeof(DisplayNameAttribute), false).ToArray<object>();
 #else
           object[] customAttrs = property.GetCustomAttributes(typeof(DisplayNameAttribute), false);
