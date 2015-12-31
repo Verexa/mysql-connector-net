@@ -1,23 +1,23 @@
 // Copyright (c) 2004-2007 MySQL AB
 //
 // MySQL Connector/NET is licensed under the terms of the GPLv2
-// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most 
-// MySQL Connectors. There are special exceptions to the terms and 
-// conditions of the GPLv2 as it is applied to this software, see the 
+// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most
+// MySQL Connectors. There are special exceptions to the terms and
+// conditions of the GPLv2 as it is applied to this software, see the
 // FLOSS License Exception
 // <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 //
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published 
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published
 // by the Free Software Foundation; version 2 of the License.
 //
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 // for more details.
 //
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc., 
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
 using System;
@@ -42,7 +42,7 @@ namespace MySql.Data.Common
 
 		#region Properties
 
-		public Socket Socket 
+		public Socket Socket
 		{
 			get { return socket; }
 		}
@@ -114,6 +114,9 @@ namespace MySql.Data.Common
 			for (int i=0; i<addr.Size; i++)
 				buff[i] = addr[i];
 
+#if DNXCORE50
+      socket.Connect(remoteEP);
+#else
 			NativeMethods.connect(socket.Handle, buff, addr.Size);
             int wsaerror = NativeMethods.WSAGetLastError();
             if (wsaerror != 10035)
@@ -123,6 +126,7 @@ namespace MySql.Data.Common
                     return false;
                 throw new SocketException(wsaerror);
             }
+#endif
 
 			// next we wait for our connect timeout or until the socket is connected
 			ArrayList write = new ArrayList();
