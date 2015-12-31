@@ -1,4 +1,4 @@
-// Copyright © 2004, 2010, Oracle and/or its affiliates. All rights reserved.
+// Copyright ï¿½ 2004, 2010, Oracle and/or its affiliates. All rights reserved.
 //
 // MySQL Connector/NET is licensed under the terms of the GPLv2
 // <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most 
@@ -86,16 +86,18 @@ namespace MySql.Data.MySqlClient
 
     #endregion
 
-#if RT
+#if RT || DNXCORE50
     public void Close()
     {
       base.Dispose();
+      baseStream.Dispose();
 #else
     public override void Close()
     {
       base.Close();
-#endif
+
       baseStream.Close();
+#endif
 #if !CF
       cache.Dispose();
 #else
