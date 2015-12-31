@@ -22,6 +22,9 @@
 
 using System;
 using System.IO;
+#if DNXCORE50
+using Microsoft.Extensions.PlatformAbstractions;
+#endif
 
 namespace MySql.Data.Common
 {
@@ -41,6 +44,8 @@ namespace MySql.Data.Common
     {
 #if NETFX_CORE
       return true;
+#elif DNXCORE50
+      return PlatformServices.Default.Runtime.OperatingSystem == "Windows";
 #else
       OperatingSystem os = Environment.OSVersion;
       switch (os.Platform)
