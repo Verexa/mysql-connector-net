@@ -16,6 +16,7 @@
     "MySqlSecurityPermission.cs",
     "SystemPerformanceMonitor.cs",
     "Installer.cs",
+    "CommandBuilder.cs",
     "dataadapter.cs"
   ],
   "frameworks": {
