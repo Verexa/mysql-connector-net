@@ -1,23 +1,23 @@
-// Copyright © 2004, 2015, Oracle and/or its affiliates. All rights reserved.
+// Copyright ï¿½ 2004, 2015, Oracle and/or its affiliates. All rights reserved.
 //
 // MySQL Connector/NET is licensed under the terms of the GPLv2
-// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most 
-// MySQL Connectors. There are special exceptions to the terms and 
-// conditions of the GPLv2 as it is applied to this software, see the 
+// <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most
+// MySQL Connectors. There are special exceptions to the terms and
+// conditions of the GPLv2 as it is applied to this software, see the
 // FLOSS License Exception
 // <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 //
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published 
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published
 // by the Free Software Foundation; version 2 of the License.
 //
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 // for more details.
 //
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc., 
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
 using System.Text;
@@ -378,7 +378,7 @@ namespace MySql.Data.MySqlClient
         case (MySqlDbType)Field_Type.NULL:
           return new MySqlString(type, true);
 #if !CF
-        case MySqlDbType.Geometry:        
+        case MySqlDbType.Geometry:
           return new MySqlGeometry(type, true);
 #endif
         case MySqlDbType.Blob:
@@ -406,7 +406,7 @@ namespace MySql.Data.MySqlClient
       CharacterSet cs = CharSetMap.GetCharacterSet(version, (string)charSets[CharacterSetIndex]);
       // starting with 6.0.4 utf8 has a maxlen of 4 instead of 3.  The old
       // 3 byte utf8 is utf8mb3
-      if (cs.name.ToLower(System.Globalization.CultureInfo.InvariantCulture) == "utf-8" &&
+      if (StringUtility.ToLowerInvariant(cs.name) == "utf-8" &&
         version.Major >= 6)
         MaxLength = 4;
       else
