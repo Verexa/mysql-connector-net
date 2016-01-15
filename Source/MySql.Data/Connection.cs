@@ -30,7 +30,7 @@ using System.Data.Common;
 using System.Drawing;
 #endif
 using System.Drawing.Design;
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
 using System.Transactions;
 using IsolationLevel = System.Data.IsolationLevel;
 #endif
@@ -38,7 +38,7 @@ using System.Text;
 using MySql.Data.Common;
 using System.Diagnostics;
 using MySql.Data.MySqlClient.Properties;
-#if !CF
+#if !CF && !DNXCORE50
 using MySql.Data.MySqlClient.Replication;
 #endif
 #if NET_40_OR_GREATER
@@ -143,7 +143,7 @@ namespace MySql.Data.MySqlClient
     {
       get
       {
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
         return (State == ConnectionState.Closed) &&
           driver != null &&
           driver.CurrentTransaction != null;
@@ -284,7 +284,7 @@ namespace MySql.Data.MySqlClient
 
     #region Transactions
 
-#if !MONO && !CF && !RT
+#if !MONO && !CF && !RT && !DNXCORE50
     /// <summary>
     /// Enlists in the specified transaction. 
     /// </summary>
@@ -409,7 +409,7 @@ namespace MySql.Data.MySqlClient
       // in parallel
       lock (driver)
       {
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
         if (Transaction.Current != null &&
           Transaction.Current.TransactionInformation.Status == TransactionStatus.Aborted)
         {
@@ -466,7 +466,7 @@ namespace MySql.Data.MySqlClient
 
       AssertPermissions();
 
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
       // if we are auto enlisting in a current transaction, then we will be
       // treating the connection as pooled
       if (Settings.AutoEnlist && Transaction.Current != null)
@@ -482,7 +482,7 @@ namespace MySql.Data.MySqlClient
       try
       {
         MySqlConnectionStringBuilder currentSettings = Settings;
-#if !CF        
+#if !CF && !DNXCORE50
 
         // Load balancing 
         if (ReplicationManager.IsReplicationGroup(Settings.Server))
@@ -540,7 +540,7 @@ namespace MySql.Data.MySqlClient
 
       // if we are opening up inside a current transaction, then autoenlist
       // TODO: control this with a connection string option
-#if !MONO && !CF && !RT
+#if !MONO && !CF && !RT && !DNXCORE50
       if (Transaction.Current != null && Settings.AutoEnlist)
         EnlistTransaction(Transaction.Current);
 #endif
@@ -621,11 +621,11 @@ namespace MySql.Data.MySqlClient
       // will be null on the second time through
       if (driver != null)
       {
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
         if (driver.CurrentTransaction == null)
 #endif
           CloseFully();
-#if !CF && !RT
+#if !CF && !RT && !DNXCORE50
         else
           driver.IsInActiveUse = false;
 #endif
