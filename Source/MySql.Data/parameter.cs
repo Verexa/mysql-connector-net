@@ -327,7 +327,7 @@ namespace MySql.Data.MySqlClient
 
     public MySqlParameter Clone()
     {
-#if RT
+#if RT || DNXCORE50
       MySqlParameter clone = new MySqlParameter(paramName, mySqlDbType);
 #else
       MySqlParameter clone = new MySqlParameter(paramName, mySqlDbType, Direction, SourceColumn, SourceVersion, paramValue);

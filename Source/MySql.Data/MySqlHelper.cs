@@ -103,7 +103,7 @@ namespace MySql.Data.MySqlClient
     }
     #endregion
 
-#if !RT
+#if !RT && !DNXCORE50
     #region ExecuteDataSet
 
     /// <summary>

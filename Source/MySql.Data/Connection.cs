@@ -264,7 +264,7 @@ namespace MySql.Data.MySqlClient
       }
     }
 
-#if !CF && !__MonoCS__ && !RT
+#if !CF && !__MonoCS__ && !RT && !DNXCORE50
 
     protected override DbProviderFactory DbProviderFactory
     {

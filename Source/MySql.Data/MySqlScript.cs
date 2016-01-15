@@ -272,7 +272,11 @@ namespace MySql.Data.MySqlClient
       {
         if (!tokenizer.Quoted)
         {
+#if DNXCORE50
+          if (token.ToLowerInvariant() == "delimiter")
+#else
           if (token.ToLower(CultureInfo.InvariantCulture) == "delimiter")
+#endif
           {
             tokenizer.NextToken();
             AdjustDelimiterEnd(tokenizer);

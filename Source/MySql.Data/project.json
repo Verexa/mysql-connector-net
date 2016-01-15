@@ -2,6 +2,7 @@
   "exclude": [
     "cf/*.cs",
     "extensions/RT/*.cs",
+    "extensions/NonRT/MySqlDataReader.cs",
     "Replication/*.cs",
     "Authentication/WindowsAuthenticationPlugin.cs",
     "common/NativeMethods.cs",

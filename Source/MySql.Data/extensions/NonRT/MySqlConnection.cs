@@ -27,15 +27,20 @@ using System.Data;
 using System.Data.Common;
 using System.Drawing;
 using System.Security;
+#if CF && !DNXCORE50
 using System.Security.Permissions;
+#endif
 
 namespace MySql.Data.MySqlClient
 {
+#if CF && !DNXCORE50
   [ToolboxBitmap(typeof(MySqlConnection), "MySqlClient.resources.connection.bmp")]
   [DesignerCategory("Code")]
   [ToolboxItem(true)]
+#endif
   public sealed partial class MySqlConnection : DbConnection, ICloneable
-  {
+    {
+#if CF && !DNXCORE50
     /// <summary>
     /// Returns schema information for the data source of this <see cref="DbConnection"/>. 
     /// </summary>
@@ -76,6 +81,7 @@ namespace MySql.Data.MySqlClient
       MySqlSchemaCollection c = schemaProvider.GetSchema(collectionName, restrictions);
       return c.AsDataTable();
     }
+#endif
 
     protected override DbTransaction BeginDbTransaction(IsolationLevel isolationLevel)
     {
@@ -89,7 +95,7 @@ namespace MySql.Data.MySqlClient
       return CreateCommand();
     }
 
-#if !CF
+#if !CF && !DNXCORE50
     partial void AssertPermissions()
     {
       // Security Asserts can only be done when the assemblies 
@@ -105,7 +111,7 @@ namespace MySql.Data.MySqlClient
     }
 #endif
 
-    #region IDisposeable
+#region IDisposeable
 
     protected override void Dispose(bool disposing)
     {
@@ -114,6 +120,6 @@ namespace MySql.Data.MySqlClient
       base.Dispose(disposing);
     }
 
-    #endregion
+#endregion
   }
 }
