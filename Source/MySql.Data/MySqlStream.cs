@@ -74,7 +74,7 @@ namespace MySql.Data.MySqlClient
       else
         stream = timedStream;
 
-#if RT
+#if RT || DNXCORE50
       inStream = baseStream;
 #else
       inStream = new BufferedStream(stream);
@@ -84,7 +84,7 @@ namespace MySql.Data.MySqlClient
 
     public void Close()
     {
-#if RT
+#if RT || DNXCORE50
       outStream.Dispose();
       inStream.Dispose();
 #else
