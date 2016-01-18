@@ -99,14 +99,20 @@ namespace MySql.Data.MySqlClient
     {
       get
       {
-        byte[] bits = buffer.GetBuffer();
+        byte[] bits = Buffer;
         return bits[0] == 0xfe && Length <= 5;
       }
     }
 
     public byte[] Buffer
     {
-      get { return buffer.GetBuffer(); }
+      get {
+        #if DNXCORE50
+        return buffer.ToArray();
+        #else
+        return buffer.GetBuffer();
+        #endif
+       }
     }
 
     public DBVersion Version
@@ -189,7 +195,7 @@ namespace MySql.Data.MySqlClient
       ulong value = 0;
 
       int pos = (int)buffer.Position;
-      byte[] bits = buffer.GetBuffer();
+      byte[] bits = Buffer;
       int shift = 0;
 
       for (int i = 0; i < numbytes; i++)
@@ -205,7 +211,7 @@ namespace MySql.Data.MySqlClient
     public long ReadLong(int numbytes)
     {
       Debug.Assert((buffer.Position + numbytes) <= buffer.Length);
-      byte[] bytes = buffer.GetBuffer();
+      byte[] bytes = Buffer;
       int pos = (int)buffer.Position;
       buffer.Position += numbytes;
       switch (numbytes)
@@ -220,7 +226,7 @@ namespace MySql.Data.MySqlClient
     public ulong ReadULong(int numbytes)
     {
       Debug.Assert((buffer.Position + numbytes) <= buffer.Length);
-      byte[] bytes = buffer.GetBuffer();
+      byte[] bytes = Buffer;
       int pos = (int)buffer.Position;
       buffer.Position += numbytes;
       switch (numbytes)
@@ -237,7 +243,7 @@ namespace MySql.Data.MySqlClient
       int value = 0;
 
       int pos = (int)buffer.Position;
-      byte[] bits = buffer.GetBuffer();
+      byte[] bits = Buffer;
       int shift = 0;
 
       for (int i = 0; i < 3; i++)
@@ -375,7 +381,7 @@ namespace MySql.Data.MySqlClient
     public byte[] ReadStringAsBytes()
     {
       byte[] readBytes;
-      byte[] tempBuffer = buffer.GetBuffer();
+      byte[] tempBuffer = Buffer;
       int end = (int)buffer.Position;
 
       while (end < (int)buffer.Length &&
