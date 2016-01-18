@@ -235,10 +235,10 @@ namespace MySql.Data.Common
     {
       IPHostEntry ipHE = ParseIPAddress(hostname);
       if (ipHE != null) return ipHE;
-      return Dns.GetHostEntry(hostname);
+      return Dns.GetHostEntryAsync(hostname).Result;
     }
 
-#if !CF
+#if !CF && !DNXCORE50
 
     private static EndPoint CreateUnixEndPoint(string host)
     {
@@ -257,7 +257,7 @@ namespace MySql.Data.Common
     private static MyNetworkStream CreateSocketStream(MySqlConnectionStringBuilder settings, IPAddress ip, bool unix)
     {
       EndPoint endPoint;
-#if !CF
+#if !CF && !DNXCORE50
       if (!Platform.IsWindows() && unix)
         endPoint = CreateUnixEndPoint(settings.Server);
       else
@@ -274,6 +274,19 @@ namespace MySql.Data.Common
       }
 
 
+#if DNXCORE50
+      var connectTask = socket.ConnectAsync(endPoint);
+      if (!connectTask.Wait((int)settings.ConnectionTimeout * 1000))
+      {
+        socket.Dispose();
+        return null;
+      }
+      MyNetworkStream stream = new MyNetworkStream(socket, true);
+      GC.SuppressFinalize(socket);
+      GC.SuppressFinalize(stream);
+      return stream;
+    }
+#else
       IAsyncResult ias = socket.BeginConnect(endPoint, null, null);
       if (!ias.AsyncWaitHandle.WaitOne((int)settings.ConnectionTimeout * 1000, false))
       {
@@ -294,6 +307,7 @@ namespace MySql.Data.Common
       GC.SuppressFinalize(stream);
       return stream;
     }
+#endif
 
 
 

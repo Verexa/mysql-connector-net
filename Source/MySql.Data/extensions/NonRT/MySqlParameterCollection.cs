@@ -32,6 +32,7 @@ namespace MySql.Data.MySqlClient
   [ListBindable(true)]
   public sealed partial class MySqlParameterCollection : DbParameterCollection
   {
+#if !DNXCORE50
     /// <summary>
     /// Adds a <see cref="MySqlParameter"/> to the <see cref="MySqlParameterCollection"/> with the parameter name, the data type, the column length, and the source column name.
     /// </summary>
@@ -44,7 +45,7 @@ namespace MySql.Data.MySqlClient
     {
       return Add(new MySqlParameter(parameterName, dbType, size, sourceColumn));
     }
-
+#endif
 
     #region DbParameterCollection Implementation
 

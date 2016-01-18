@@ -258,7 +258,11 @@ namespace MySql.Data.MySqlClient
         if (driver != null) return driver;
 
         // We have no tickets right now, lets wait for one.
+#if DNXCORE50
+        if (!autoEvent.WaitOne(timeOut)) break;
+#else
         if (!autoEvent.WaitOne(timeOut, false)) break;
+#endif
         timeOut = fullTimeOut - (int)DateTime.Now.Subtract(start).TotalMilliseconds;
       }
       throw new MySqlException(Resources.TimeoutGettingConnection);

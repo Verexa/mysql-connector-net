@@ -37,7 +37,7 @@ using System.Threading;
 namespace MySql.Data.MySqlClient
 {
   /// <include file='docs/MySqlDataReader.xml' path='docs/ClassSummary/*'/>
-  public sealed partial class MySqlDataReader : IDisposable
+  public sealed partial class MySqlDataReader : DbDataReader, IDisposable
   {
     // The DataReader should always be open when returned to the user.
     private bool isOpen = true;
@@ -808,7 +808,7 @@ namespace MySql.Data.MySqlClient
 
     #endregion
 
-#if !RT
+#if !RT && !DNXCORE50
     IDataReader IDataRecord.GetData(int i)
     {
       return base.GetData(i);
@@ -953,7 +953,7 @@ namespace MySql.Data.MySqlClient
       IMySqlValue v = resultSet[index];
 
       if (checkNull && v.IsNull)
-#if RT
+#if RT || DNXCORE50
         throw new MySqlNullValueException();
 #else
         throw new System.Data.SqlTypes.SqlNullValueException();
@@ -1048,8 +1048,21 @@ namespace MySql.Data.MySqlClient
       }
     }
 
-    #region Destructor
-    ~MySqlDataReader()
+    public override IEnumerator GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+        public override int Depth
+    {
+        get
+        {
+            return 0;
+        }
+    }
+
+        #region Destructor
+        ~MySqlDataReader()
     {
       Dispose(false);
     }

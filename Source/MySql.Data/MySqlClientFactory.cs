@@ -25,7 +25,9 @@
 using System.Data.Common;
 using System;
 using System.Reflection;
+#if !DNXCORE50
 using System.Security.Permissions;
+#endif
 using System.Security;
 
 namespace MySql.Data.MySqlClient
@@ -33,8 +35,12 @@ namespace MySql.Data.MySqlClient
   /// <summary>
   /// DBProviderFactory implementation for MysqlClient.
   /// </summary>
+#if !DNXCORE50
   [ReflectionPermission(SecurityAction.Assert, MemberAccess = true)]  
   public sealed class MySqlClientFactory : DbProviderFactory, IServiceProvider
+#else
+  public sealed class MySqlClientFactory : DbProviderFactory
+#endif
   {
     /// <summary>
     /// Gets an instance of the <see cref="MySqlClientFactory"/>. 
@@ -44,6 +50,7 @@ namespace MySql.Data.MySqlClient
     private Type dbServicesType;
     private FieldInfo mySqlDbProviderServicesInstance;
 
+#if !DNXCORE50
     /// <summary>
     /// Returns a strongly typed <see cref="DbCommandBuilder"/> instance. 
     /// </summary>
@@ -52,6 +59,7 @@ namespace MySql.Data.MySqlClient
     {
       return new MySqlCommandBuilder();
     }
+#endif
 
     /// <summary>
     /// Returns a strongly typed <see cref="DbCommand"/> instance. 
@@ -71,6 +79,7 @@ namespace MySql.Data.MySqlClient
       return new MySqlConnection();
     }
 
+#if !DNXCORE50
     /// <summary>
     /// Returns a strongly typed <see cref="DbDataAdapter"/> instance. 
     /// </summary>
@@ -79,6 +88,7 @@ namespace MySql.Data.MySqlClient
     {
       return new MySqlDataAdapter();
     }
+#endif
 
     /// <summary>
     /// Returns a strongly typed <see cref="DbParameter"/> instance. 
@@ -89,6 +99,7 @@ namespace MySql.Data.MySqlClient
       return new MySqlParameter();
     }
 
+#if !DNXCORE50
     /// <summary>
     /// Returns a strongly typed <see cref="DbConnectionStringBuilder"/> instance. 
     /// </summary>
@@ -106,8 +117,10 @@ namespace MySql.Data.MySqlClient
     {
       get { return false; }
     }
+#endif
 
-    #region IServiceProvider Members
+#if !DNXCORE50
+#region IServiceProvider Members
 
     /// <summary>
     /// Provide a simple caching layer
@@ -165,7 +178,8 @@ namespace MySql.Data.MySqlClient
       return MySqlDbProviderServicesInstance.GetValue(null);
     }
 
-    #endregion
+#endregion
+#endif
   }
 }
 

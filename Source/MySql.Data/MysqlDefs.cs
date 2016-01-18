@@ -431,7 +431,7 @@ namespace MySql.Data.MySqlClient
       get { return "MySql Connector/NET"; }
     }
 
-#if !RT
+#if !RT && !DNXCORE50
     [DisplayName("_pid")]
     public string PID
     {

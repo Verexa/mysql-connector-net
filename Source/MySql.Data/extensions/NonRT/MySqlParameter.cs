@@ -22,7 +22,7 @@
 
 using System;
 using System.ComponentModel;
-#if !CF
+#if !CF && !DNXCORE50
 using System.ComponentModel.Design.Serialization;
 #endif
 using System.Data;
@@ -33,13 +33,18 @@ using ParameterDirection = System.Data.ParameterDirection;
 
 namespace MySql.Data.MySqlClient
 {
-#if !CF
+#if !CF && !DNXCORE50
   [TypeConverter(typeof(MySqlParameterConverter))]
 #endif
+#if DNXCORE50
+  public sealed partial class MySqlParameter : DbParameter
+#else
   public sealed partial class MySqlParameter : DbParameter, IDataParameter, IDbDataParameter
+#endif
   {
     private DbType dbType;
 
+#if !DNXCORE50
     /// <summary>
     /// Initializes a new instance of the <see cref="MySqlParameter"/> class with the parameter name, the <see cref="MySqlDbType"/>, the size, and the source column name.
     /// </summary>
@@ -103,6 +108,7 @@ namespace MySql.Data.MySqlClient
     /// </summary>
     [Category("Data")]
     public override DataRowVersion SourceVersion { get; set; }
+#endif
 
     /// <summary>
     /// Gets or sets the name of the source column that is mapped to the <see cref="DataSet"/> and used for loading or returning the <see cref="Value"/>.
@@ -304,7 +310,7 @@ namespace MySql.Data.MySqlClient
     }
   }
 
-#if !CF
+#if !CF && !DNXCORE50
   internal class MySqlParameterConverter : TypeConverter
   {
 

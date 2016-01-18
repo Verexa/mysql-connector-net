@@ -29,6 +29,19 @@ using MySql.Data.MySqlClient.Properties;
 
 namespace MySql.Data.MySqlClient
 {
+    static class MemoryStreamExtensions
+    {
+        public static byte[] GetBuffer(this MemoryStream ms)
+        {
+            ArraySegment<byte> buffer;
+            if (ms.TryGetBuffer(out buffer)) {
+                return buffer.Array;
+            }
+
+            throw new NotImplementedException("GetBuffer implementation failed.");
+        }
+    }
+
   class MySqlPacket
   {
     private byte[] tempBuffer = new byte[256];

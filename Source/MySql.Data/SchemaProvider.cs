@@ -860,7 +860,11 @@ namespace MySql.Data.MySqlClient
 #else
       sr.Close();
 #endif
+#if !DNXCORE50
       str.Close();
+#else
+      str.Dispose();
+#endif
 
       return dt;
     }

@@ -68,6 +68,7 @@ namespace MySql.Data.MySqlClient
         public static void EnableQueryAnalyzer(string host, int postInterval)
         {
             if (qaEnabled) return;
+#if !DNXCORE50
             // create a EMTraceListener and add it to our source
             TraceListener l = (TraceListener)Activator.CreateInstance("MySql.EMTrace",
                 "MySql.EMTrace.EMTraceListener", false, BindingFlags.CreateInstance,
@@ -76,6 +77,7 @@ namespace MySql.Data.MySqlClient
                 throw new MySqlException(Resources.UnableToEnableQueryAnalysis);
             source.Listeners.Add(l);
             Switch.Level = SourceLevels.All;
+#endif
         }
 
         public static void DisableQueryAnalyzer()

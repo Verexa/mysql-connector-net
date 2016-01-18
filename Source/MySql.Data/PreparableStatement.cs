@@ -104,7 +104,7 @@ namespace MySql.Data.MySqlClient
 #else
           nullMap = new BitArray(paramList.Length);
 #endif
-          numNullBytes = (nullMap.Count + 7) / 8;
+          numNullBytes = (nullMap.Length + 7) / 8;
       }
 
       packet = new MySqlPacket(Driver.Encoding);
@@ -163,7 +163,7 @@ namespace MySql.Data.MySqlClient
         p.Serialize(packet, true, Connection.Settings);
       }
       if (nullMap != null)
-        nullMap.CopyTo(packet.Buffer, nullMapPosition);
+        ((ICollection)nullMap).CopyTo(packet.Buffer, nullMapPosition);
 
       executionCount++;
 
