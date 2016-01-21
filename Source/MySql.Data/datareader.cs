@@ -1040,7 +1040,7 @@ namespace MySql.Data.MySqlClient
       GC.SuppressFinalize(this);
     }
 
-    internal new void Dispose(bool disposing)
+    protected override void Dispose(bool disposing)
     {
       if (disposing)
       {
