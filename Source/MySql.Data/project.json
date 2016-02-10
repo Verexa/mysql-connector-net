@@ -44,5 +44,9 @@
         "System.Net.Sockets": "4.1.0-*"
       }
     }
-  }
+  },
+  "resoure": [
+      "Properties/*.txt",
+      "Properties/*.resx"
+  ]
 }
