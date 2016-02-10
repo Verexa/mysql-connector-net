@@ -45,7 +45,7 @@
       }
     }
   },
-  "resoure": [
+  "resource": [
       "Properties/*.txt",
       "Properties/*.resx"
   ]
